@@ -168,9 +168,7 @@ export class HotelStore {
   addReview(text: string, id: number, user: string) {
     const currentHotelIndex = this.hotelsList?.findIndex(
       (item) => item.id === id
-    );    
-    // if (!currentHotelIndex) return;   
-    console.log(new Date());
+    );
     this.hotelsList[currentHotelIndex].review.push({
       user,
       text,

@@ -1,21 +1,20 @@
 import { useNavigate } from "react-router-dom";
-//import { useDataStore } from "../../store/context";
-//import { HotelInterface } from "../../store/hotelStore";
 import { Card, Image, Space, Typography } from "antd";
 import { StarTwoTone } from "@ant-design/icons";
+import { HotelInterface } from "../../store/hotelStore";
 
-const { Text } = Typography;
+interface PropsHotel {
+  props: HotelInterface;
+}
 
-function Hotel({ props }: any) {
-  //console.log(hotel);
-  //const store = useDataStore();
-  // console.log(store);
+function Hotel({ props }: PropsHotel) {
+  const { Text } = Typography;
   const navigate = useNavigate();
   const arrStar = [];
   for (let i = 0; i < props.star; i++) {
     arrStar[i] = 1;
   }
-  const onClick = (e: any) => {
+  const onClick = () => {
     navigate(`/book/${props.id}`);
   };
   const onClickReviews = () => {

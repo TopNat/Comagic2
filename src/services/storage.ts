@@ -15,7 +15,3 @@ export const clearSessionData = () => {
   localStorage.removeItem("name");
   localStorage.removeItem("id");
 };
-/*
-export const isAuthorize = () => {
-  return !!localStorage.getItem("name");
-};*/

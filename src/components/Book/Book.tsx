@@ -15,7 +15,6 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import { useEffect, useState } from "react";
 import { getUniqId } from "../../services/func";
 
-
 type FieldTypeBook = {
   services: string[];
   period: string;
@@ -52,28 +51,26 @@ function Book() {
   };
 
   const onFinish: FormProps<FieldTypeBook>["onFinish"] = (data) => {
-    console.log(data.services);
-    data.price = price;
-    console.log("Success:", data);
-    if (!data.guests) data.guests = 1;
+    data.price = price;       
     let nameH = "";
     dataHotel?.name ? (nameH = dataHotel?.name) : (nameH = "");
     const periodStr =
       dayjs(data.period[0]).format("DD.MM.YYYY") +
       "-" +
       dayjs(data.period[1]).format("DD.MM.YYYY");
-    console.log(periodStr);
     const currentUserlIndex = store.users.usersList.findIndex(
       (item) => item.id === idUser
     );
+
     const idBooking = getUniqId(
       store.users.usersList[currentUserlIndex].booking
     );
+
     store.users.addNewBooking(
       {
         id: idBooking,
         nameHotel: nameH,
-        services: data.services,
+       // services: data.services,
         period: periodStr,
         guests: data.guests,
         price: data.price,
@@ -83,7 +80,6 @@ function Book() {
     );
     setTimeout(function () {
       store.users.updateStatus(idUser, idBooking);
-      console.log("Привет, мир!");
     }, 5000);
     navigate("/account");
   };
@@ -97,6 +93,9 @@ function Book() {
         style={{ maxWidth: 800 }}
         onFinish={onFinish}
         autoComplete="off"
+        initialValues={{
+          guests: 1,
+        }}
       >
         <Form.Item label="Услуги" valuePropName="checked" name="services">
           <Checkbox.Group style={{ width: "100%" }}>
@@ -132,7 +131,7 @@ function Book() {
         </Form.Item>
 
         <Form.Item label="Кол-во гостей" name="guests">
-          <InputNumber min={1} max={4} defaultValue={1} />
+          <InputNumber min={1} max={4} />
         </Form.Item>
         <Form.Item label="Цена" name="price">
           <span>{price}</span>
@@ -145,6 +144,5 @@ function Book() {
       </Form>
     </Card>
   );
-  
 }
 export default Book;

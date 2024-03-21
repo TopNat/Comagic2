@@ -8,38 +8,41 @@ type FieldTypeReview = {
 };
 
 function Reviews() {
-  const {  Title } = Typography;
+  const { Title } = Typography;
   const store = useDataStore();
   const { id } = useParams();
   const navigate = useNavigate();
+  const [form] = Form.useForm();
   const isAutorization = store.users.isAutorization;
   const nameUser = localStorage.getItem("name") ?? "";
 
   const onFinish: FormProps<FieldTypeReview>["onFinish"] = (data) => {
-    console.log("Success:", data.text);
-    console.log(id);
     store.hotels.addReview(data.text, Number(id), nameUser);
+    form.resetFields();
   };
 
   const dataHotel = store.hotels.hotelsList.find(
     (item) => item.id === Number(id)
   );
 
-  const onClickHotel = (e: any) => {
+  const onClickHotel = () => {
     navigate(`/book/${id}`);
   };
   return useObserver(() => {
     return (
       <>
-       <Title level={4} onClick={onClickHotel}>Отзывы об отеле: {dataHotel?.name}</Title>
+        <Title level={4} onClick={onClickHotel}>
+          Отзывы об отеле: {dataHotel?.name}
+        </Title>
         {dataHotel &&
-          dataHotel.review.map((item) => (
-            <Card title={item.user} style={{ maxWidth: 1000 }}>
+          dataHotel.review.map((item, index) => (
+            <Card key={index} title={item.user} style={{ maxWidth: 1000 }}>
               {item.text}
             </Card>
           ))}
         {isAutorization && (
           <Form
+            form={form}
             variant="filled"
             style={{ maxWidth: 600, paddingTop: "10px" }}
             onFinish={onFinish}
@@ -47,7 +50,7 @@ function Reviews() {
             <Form.Item
               label="Отзыв"
               name="text"
-              rules={[{ required: true, message: "Please input!" }]}
+              rules={[{ required: true, message: "Введите отзыв!" }]}
             >
               <Input.TextArea />
             </Form.Item>

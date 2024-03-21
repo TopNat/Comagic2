@@ -3,18 +3,17 @@ import { clearSessionData, getSessionData } from "../../services/storage";
 import { useNavigate } from "react-router-dom";
 import { useDataStore } from "../../store/context";
 import { DownOutlined } from "@ant-design/icons";
-import { useObserver } from "mobx-react";
 
 function Autorization() {
-  //const { useToken } = theme;
-  //const { token } = useToken();
-
   const store = useDataStore();
   const navigate = useNavigate();
   const isAutorization = store.users.isAutorization;
-  console.log(isAutorization);
 
   const dataUser = getSessionData();
+  const currentUserlIndex = store.users.usersList.findIndex(
+    (item) => item.id === Number(dataUser.id)
+  );
+  if (currentUserlIndex < 0) clearSessionData();
 
   const Exit = () => {
     clearSessionData();
@@ -42,32 +41,29 @@ function Autorization() {
     },
   ];
 
-  //}
-
   const onClick = () => {
     navigate("/entr");
   };
-  return useObserver(() => {
-    return (
-      <>
-        {isAutorization ? (
-          <span>
-            <Dropdown menu={{ items }}>
-              <a onClick={(e) => e.preventDefault()}>
-                <Space>
-                  Добро пожаловать, {dataUser.name}!
-                  <DownOutlined />
-                </Space>
-              </a>
-            </Dropdown>
-          </span>
-        ) : (
-          <Button type="primary" onClick={onClick}>
-            Войти
-          </Button>
-        )}
-      </>
-    );
-  });
+
+  return (
+    <>
+      {isAutorization ? (
+        <span>
+          <Dropdown menu={{ items }}>
+            <a onClick={(e) => e.preventDefault()}>
+              <Space>
+                Добро пожаловать, {dataUser.name}!
+                <DownOutlined />
+              </Space>
+            </a>
+          </Dropdown>
+        </span>
+      ) : (
+        <Button type="primary" onClick={onClick}>
+          Войти
+        </Button>
+      )}
+    </>
+  );
 }
 export default Autorization;

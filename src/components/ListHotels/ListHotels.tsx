@@ -8,25 +8,18 @@ import type { RadioChangeEvent } from "antd";
 function ListHotel() {
   const store = useDataStore();
   const [sortHotel, setSortHotel] = useState<HotelInterface[]>([]);
-  useEffect(()=>{
-    setSortHotel(store.hotels.hotelsList)
+  useEffect(() => {
+    setSortHotel(store.hotels.hotelsList);
   }, []);
 
   const onChange = (e: RadioChangeEvent) => {
-    console.log("radio checked", e.target.value);
-    //setValue(e.target.value);
     setSortHotel(store.hotels.filterByPriority(e.target.value));
   };
- 
-  // console.log(store);
-  //let hotels = store.hotels.filterByPriority("name");
-  //let hotels = store.hotels.hotelsList;
-  //console.log(hotels);
 
   return (
     <Space direction="vertical" size={16}>
       Сортировать по:
-      <Radio.Group onChange={onChange} >
+      <Radio.Group onChange={onChange}>
         <Radio value="star">кол-во звезд</Radio>
         <Radio value="location">удаленность от центра</Radio>
         <Radio value="price">цена</Radio>

@@ -13,7 +13,6 @@ export interface UserListInterface {
 export interface Booking {
   id: number;
   nameHotel: string;
-  services: string[];
   period: string;
   guests: number;
   price: number;
@@ -40,7 +39,6 @@ export class UserStore {
         {
           id: 1,
           nameHotel: "Palace Bridge Hotel",
-          services: [""],
           period: "28.03.20244-01.04.2024",
           guests: 2,
           price: 3500,
@@ -70,7 +68,6 @@ export class UserStore {
     dataUser: Omit<UserListInterface, "mail" | "booking" | "id">,
     idUser: number
   ) {
-    console.log(dataUser);
     const currentUserlIndex = this.usersList.findIndex(
       (item) => item.id === idUser
     );
@@ -87,7 +84,6 @@ export class UserStore {
     this.usersList[currentUserlIndex].booking.push({
       id: newBooking.id,
       nameHotel: newBooking.nameHotel,
-      services: newBooking.services,
       period: newBooking.period,
       guests: newBooking.guests,
       price: newBooking.price,

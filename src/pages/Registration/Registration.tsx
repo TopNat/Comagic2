@@ -2,7 +2,6 @@ import { useDataStore } from "../../store/context";
 import { Button, Form, FormProps, Input } from "antd";
 import { getUniqId } from "../../services/func";
 import { useNavigate } from "react-router-dom";
-//import { UserListInterface } from "../../store/userStore";
 
 type FieldType = {
   name: string;
@@ -17,8 +16,6 @@ function Registration() {
   const navigate = useNavigate();
 
   const onFinish: FormProps<FieldType>["onFinish"] = (data) => {
-    console.log("Success:", data);
-
     if (data) {
       store.users.addNewUser({
         id: getUniqId(store.users.usersList),
@@ -33,12 +30,6 @@ function Registration() {
     }
   };
 
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-    errorInfo
-  ) => {
-    console.log("Failed:", errorInfo);
-  };
-
   return (
     <div>
       <Form
@@ -48,7 +39,6 @@ function Registration() {
         style={{ maxWidth: 600 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
         autoComplete="off"
       >
         <Form.Item<FieldType>
@@ -95,7 +85,7 @@ function Registration() {
             },
             ({ getFieldValue }) => ({
               validator(_, value) {
-                const checkEmail = store.users.filterByEmail(value);                
+                const checkEmail = store.users.filterByEmail(value);
                 if (!checkEmail) {
                   return Promise.resolve();
                 }

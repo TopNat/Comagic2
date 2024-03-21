@@ -5,14 +5,13 @@ import { setSessionData } from "../../services/storage";
 import { Typography } from "antd";
 import { useState } from "react";
 
-const { Text } = Typography;
-
 type FieldType = {
   password: string;
   email: string;
 };
 
-function Hotel() {  
+function Hotel() {
+  const { Text } = Typography;
   const store = useDataStore();
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -23,21 +22,13 @@ function Hotel() {
 
   const onFinish: FormProps<FieldType>["onFinish"] = (values) => {
     const entrUser = store.users.filterByUser(values.email, values.password);
-    console.log(entrUser);
     if (entrUser) {
-      console.log(entrUser?.name);
       setSessionData(entrUser?.name, String(entrUser?.id));
       store.users.setAutorization(true);
       navigate(`/`);
     } else {
       setError("Логин или пароль не совпадают!");
     }
-  };
-
-  const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (
-    errorInfo
-  ) => {
-    console.log("Failed:", errorInfo);
   };
 
   return (
@@ -48,7 +39,6 @@ function Hotel() {
       style={{ maxWidth: 600 }}
       initialValues={{ remember: true }}
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
       autoComplete="off"
     >
       <Form.Item<FieldType>
@@ -82,7 +72,6 @@ function Hotel() {
           Войти
         </Button>
       </Form.Item>
-
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
         <a onClick={onClickReg}>Зарегистрироваться</a>
